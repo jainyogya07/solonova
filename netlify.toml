@@ -1,0 +1,25 @@
+
+[build]
+  command = "cd src/frontend && npm install && npm run build"
+  publish = "src/frontend/dist"
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/agent/stream"
+  to = "/api/agent/stream" # Edge function handles this
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# Redirect everything else to index.html (SPA fallback)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

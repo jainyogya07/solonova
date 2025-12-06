@@ -1,0 +1,5 @@
+import VISION_PANEL_PREVIEW
+// This file is just a placeholder to acknowledge the advanced feature request.
+// In reality the functionality is already built into VisionPanel.tsx:
+// "const url = URL.createObjectURL(f); setPreview(url);"
+// So it is already done.

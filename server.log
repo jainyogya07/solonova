@@ -1,0 +1,13 @@
+🚀 Solonova backend running at http://localhost:5174
+Agent.request.start { prompt: 'hello' }
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2, "search_context_size": "low"}, "cit
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 2, "total_tokens": 3, "search_context_size": "low"}, "cit
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 3, "total_tokens": 4, "search_context_size": "low"}, "cit
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 4, "total_tokens": 5, "search_context_size": "low"}, "cit
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 5, "total_tokens": 6, "search_context_size": "low"}, "cit
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 6, "total_tokens": 7, "search_context_size": "low"}, "cit
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 7, "total_tokens": 8, "search_context_size": "low"}, "cit
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 8, "total_tokens": 9, "search_context_size": "low"}, "cit
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 9, "total_tokens": 10, "search_context_size": "low"}, "ci
+DEBUG_STREAM_DATA: {"id": "cdab59d4-e13d-463f-b544-55a3c9e53cea", "model": "sonar-pro", "created": 1765022597, "usage": {"prompt_tokens": 1, "completion_tokens": 9, "total_tokens": 10, "search_context_size": "low", "cos
+Agent.request.done { metrics: { totalLatencyMs: 1994 } }
