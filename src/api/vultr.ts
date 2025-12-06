@@ -1,6 +1,6 @@
 // src/api/vultr.ts
-import { measureLatency } from "../utils/latency";
-import { log } from "../utils/logger";
+import { measureLatency } from "../utils/latency.ts";
+import { log } from "../utils/logger.ts";
 
 const VULTR_URL = process.env.VULTR_URL || "https://api.vultr.com/v2/compute/run";
 const VULTR_KEY = process.env.VULTR_KEY;
