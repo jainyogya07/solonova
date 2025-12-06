@@ -1,5 +1,5 @@
 
-import { handleUserRequest } from "../../agents/solonovaAgent";
+import { handleUserRequest } from "../../agents/solonovaAgent.ts";
 
 export async function agentStreamHandler(body: any, sendChunk: (data: string) => void) {
   if (!body || !body.prompt) {

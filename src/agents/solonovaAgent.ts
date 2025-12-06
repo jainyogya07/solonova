@@ -1,9 +1,8 @@
-
-import { perplexityFast, perplexityReason } from "../api/perplexity";
-import { cerebrasFast } from "../api/cerebras";
-import { vultrOptimize } from "../api/vultr";
-import * as memory from "../memory/store";
-import { log, debug } from "../utils/logger";
+import { perplexityFast, perplexityReason } from "../api/perplexity.ts";
+import { cerebrasFast } from "../api/cerebras.ts";
+import { vultrOptimize } from "../api/vultr.ts";
+import * as memory from "../memory/store.ts";
+import { log, debug } from "../utils/logger.ts";
 
 export interface AgentRequest {
   type: "chat" | "idea" | "plan" | "code" | "optimize";
@@ -34,7 +33,7 @@ const FAST_TIMEOUT = 8000; // ms
 const DEEP_TIMEOUT = 2500; // optional background
 
 export async function handleUserRequest(req: AgentRequest): Promise<AgentResponse> {
-  const id = req.id ?? `sol-${Math.random().toString(36).slice(2, 9)}`;
+  const id = req.id ?? `sol - ${Math.random().toString(36).slice(2, 9)} `;
   const startTotal = performance.now();
   const latencyBudget = req.latencyBudgetMs ?? DEFAULT_LATENCY_BUDGET;
 
@@ -43,13 +42,13 @@ export async function handleUserRequest(req: AgentRequest): Promise<AgentRespons
   try {
     if (req.userId) {
       const snapshot = await memory.readSnapshot(req.userId).catch((e) => null);
-      if (snapshot) userContext = `UserMemory: ${snapshot.summary ?? ""}\n\n`;
+      if (snapshot) userContext = `UserMemory: ${snapshot.summary ?? ""} \n\n`;
     }
   } catch (e) {
     debug("memory.read.failed", e);
   }
 
-  const basePrompt = `${userContext}Request Type: ${req.type}\n\n${req.prompt}`;
+  const basePrompt = `${userContext}Request Type: ${req.type} \n\n${req.prompt} `;
 
   // 1) Fast path — try to get quick response (within FAST_TIMEOUT)
   // 1) Fast path — Race Cerebras (Ultra-Fast) vs Perplexity (Fast)
@@ -135,7 +134,7 @@ export async function handleUserRequest(req: AgentRequest): Promise<AgentRespons
   // 4) Build final content using fastRes primarily; if none, return fallback
   let content = fastRes.content ?? null;
   if (!content) {
-    const errorDetails = (fastRes as any).error ? `Error: ${(fastRes as any).error}` : "fast: no";
+    const errorDetails = (fastRes as any).error ? `Error: ${(fastRes as any).error} ` : "fast: no";
     content = `Sorry — Solonova couldn't generate an answer. Debug info:\n- ${errorDetails}\n`;
   }
 
