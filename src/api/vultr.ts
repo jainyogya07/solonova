@@ -2,8 +2,10 @@
 import { measureLatency } from "../utils/latency.ts";
 import { log } from "../utils/logger.ts";
 
-const VULTR_URL = process.env.VULTR_URL || "https://api.vultr.com/v2/compute/run";
-const VULTR_KEY = process.env.VULTR_KEY;
+import { getEnv } from "../utils/env.ts";
+
+const VULTR_URL = getEnv("VULTR_URL") || "https://api.vultr.com/v2/compute/run";
+const VULTR_KEY = getEnv("VULTR_KEY");
 
 export async function vultrOptimize(code: string) {
   const start = Date.now();

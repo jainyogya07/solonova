@@ -1,8 +1,7 @@
-// src/api/perplexity.ts
-// Defensive Perplexity API with proper error handling
+import { getEnv } from "../utils/env.ts";
 
-const PPLX_KEY = process.env.PPLX_KEY;
-const PPLX_URL = process.env.PPLX_URL ?? "https://api.perplexity.ai/chat/completions";
+const PPLX_KEY = getEnv("PPLX_KEY");
+const PPLX_URL = getEnv("PPLX_URL") ?? "https://api.perplexity.ai/chat/completions";
 
 const SYSTEM_PROMPT = "You are Solonova, a friendly AI assistant for solopreneurs. Be conversational and natural. When someone greets you (hi, hello, hey, etc.), just greet them back warmly in 1-2 sentences. NEVER give dictionary definitions or explanations of what greetings mean. Only provide detailed information when explicitly asked.";
 

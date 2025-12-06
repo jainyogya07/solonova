@@ -1,6 +1,6 @@
+import { getEnv } from "../utils/env.ts";
 
-const CEREBRAS_KEY = process.env.CEREBRAS_API_KEY;
-declare var process: any;
+const CEREBRAS_KEY = getEnv("CEREBRAS_API_KEY");
 const CEREBRAS_URL = "https://api.cerebras.ai/v1/chat/completions";
 
 export async function cerebrasFast(prompt: string) {
