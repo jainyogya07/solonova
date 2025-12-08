@@ -10,9 +10,12 @@ const app = express();
 // -------------------------------
 //  MIDDLEWARE
 // -------------------------------
+const corsOrigin = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim()).filter(Boolean)
+    : "http://localhost:5173";
 app.use(
     cors({
-        origin: "http://localhost:5173", // Vite frontend
+        origin: corsOrigin,
         methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"],
     })
@@ -79,7 +82,9 @@ app.use((err, req, res, next) => {
 // -------------------------------
 //  START SERVER
 // -------------------------------
-const PORT = 5174;
-app.listen(PORT, () => {
-    console.log(`🚀 Solonova backend running at http://localhost:${PORT}`);
+const PORT = Number(process.env.PORT) || 5174;
+const HOST = process.env.HOST || "0.0.0.0";
+app.listen(PORT, HOST, () => {
+    console.log(`🚀 Solonova backend running at http://${HOST}:${PORT}`);
+    console.log(`✅ CORS allowed origins: ${Array.isArray(corsOrigin) ? corsOrigin.join(", ") : corsOrigin}`);
 });

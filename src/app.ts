@@ -15,6 +15,14 @@ import { logsHandler } from "./api/handler/logsHandler"; // changed from .js to 
 import { getMemoryHandler, clearMemoryHandler } from "./api/handler/memoryHandler";
 
 const app = express();
+const allowedOrigins =
+    process.env.ALLOWED_ORIGINS?.split(",")
+        .map((o) => o.trim())
+        .filter(Boolean) ?? ["https://solonovaplan.vercel.app"];
+const corsOrigin = allowedOrigins.includes("*") ? "*" : allowedOrigins;
+
+// expose for logging in server entrypoint
+app.locals.allowedOrigins = allowedOrigins;
 
 // Handle Vercel read-only filesystem by using /tmp for uploads
 const isVercel = process.env.VERCEL === "1";
@@ -32,7 +40,7 @@ const upload = multer({ dest: uploadDir });
 // -------------------------------
 app.use(
     cors({
-        origin: "*", // Allow all for Vercel demo simplicity, or restrict to frontend URL
+        origin: corsOrigin, // restrict via ALLOWED_ORIGINS env or default Vercel domain
         methods: ["GET", "POST", "OPTIONS"],
         allowedHeaders: ["Content-Type", "Authorization"],
     })

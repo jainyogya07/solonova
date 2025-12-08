@@ -1,5 +1,9 @@
 {
   "type": "module",
+  "scripts": {
+    "start": "node --loader tsx server.ts",
+    "dev": "node --loader tsx server.ts"
+  },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
