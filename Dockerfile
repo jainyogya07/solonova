@@ -13,6 +13,6 @@ ENV NODE_ENV=production
 ENV PORT=5174
 EXPOSE 5174
 
-# Start the TypeScript server with tsx
+# Start the TypeScript server with tsx (Node 20+ needs --import)
 CMD ["npm", "start"]
 

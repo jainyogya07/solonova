@@ -1,8 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "start": "node --loader tsx server.ts",
-    "dev": "node --loader tsx server.ts"
+    "start": "node --import tsx server.ts",
+    "dev": "node --import tsx server.ts"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
