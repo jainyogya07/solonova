@@ -8,7 +8,7 @@ import ToolPanel from "../components/ToolPanel";
 import VisionPanel from "../components/VisionPanel";
 
 export default function ChatPage() {
-  const { messages, loading, lastLatency, sendMessageStream, addMessage } = useSolonova();
+  const { messages, loading, lastLatency, sendMessageStream, addMessage, reset } = useSolonova();
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
   // Right Panel State: "hidden" | "dev" | "tools" | "vision"
@@ -25,11 +25,14 @@ export default function ChatPage() {
   const handleDemo = () => {
     sendMessageStream("Running Demo...", { type: "chat", userId: "demo-user" });
   };
+  const handleNewChat = () => {
+    reset();
+  };
 
   return (
     <div className="w-screen h-screen flex bg-black text-white overflow-hidden font-sans">
       {/* LEFT SIDEBAR */}
-      <Sidebar onAction={handleAction} onDemo={handleDemo} />
+      <Sidebar onAction={handleAction} onDemo={handleDemo} onNewChat={handleNewChat} />
 
       {/* MAIN CHAT AREA */}
       <div className="flex-1 flex flex-col border-x border-gray-800 relative z-10">

@@ -199,11 +199,18 @@
         "responseSummary": "Hi! How can I assist you today? If you want to know about AI memory or anything else, just let me know!",
         "timestamp": "2025-12-08T13:24:14.949Z",
         "meta": {}
+      },
+      {
+        "requestId": "sol - ro8riu9 ",
+        "prompt": "what is your name",
+        "responseSummary": "Nice to meet you. My name is UserMemory, but you can call me UM for short. I'm here to help answer any questions you have, provide information, and chat with you about various topics, including yoga. Would you like to learn more about yoga?",
+        "timestamp": "2025-12-08T15:11:15.717Z",
+        "meta": {}
       }
     ],
-    "summary": "what is yog -> Yoga is a physical, mental, and spiritual practice that originated in ancient India. It involves a combination of physical postures (asanas), breathing techniques (pranayama), and meditation to promote overall well-being and balance in the body, mind, and spirit. There are many dif...",
-    "lastNotes": "Hi! How can I assist you today? If you want to know about AI memory or anything else, just let me know!",
+    "summary": "i made you -> It seems like you made a joke with \"i made you\". That's quite clever. However, I'm not sure if you're referring to something specific or if you just wanted to have a bit of fun. If you'd like to chat about it or something else, I'm here to listen. • what is python -> Sorry — Solonov...",
+    "lastNotes": "Nice to meet you. My name is UserMemory, but you can call me UM for short. I'm here to help answer any questions you have, provide information, and chat with you about various topics, including yoga. Would you like to learn more about yoga?",
     "createdAt": "2025-12-06T11:47:44.656Z",
-    "updatedAt": "2025-12-08T13:24:14.961Z"
+    "updatedAt": "2025-12-08T15:11:15.727Z"
   }
 }

@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 export default function Sidebar({
   onAction,
   onDemo,
+  onNewChat,
 }: {
   onAction: (type: string) => void;
   onDemo: () => void;
+  onNewChat: () => void;
 }) {
   const navigate = useNavigate();
 
@@ -21,6 +23,14 @@ export default function Sidebar({
       >
         Solonova
       </div>
+
+      {/* New Chat Button */}
+      <button
+        onClick={onNewChat}
+        className="w-full px-3 py-2 mb-6 text-left rounded-md bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition font-medium border border-purple-500/50"
+      >
+        ➕ New Chat
+      </button>
 
       {/* Quick Actions */}
       <div className="flex flex-col gap-3 mb-8">
