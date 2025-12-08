@@ -1,0 +1,14 @@
+services:
+  - name: solonova-backend
+    type: web
+    env: docker
+    repo: https://github.com/jainyogya07/solonova
+    rootDir: .
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ALLOWED_ORIGINS
+        value: https://solonovaplan.vercel.app
+    healthCheckPath: /api/health
+
