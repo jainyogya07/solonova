@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { apiUrl } from "../../utils/api";
 
 export default function DevPanel() {
     const [logs, setLogs] = useState<any[]>([]);
@@ -9,7 +10,7 @@ export default function DevPanel() {
         const fetchData = async () => {
             // Logs & Latency
             try {
-                const r = await fetch("/api/logs");
+                const r = await fetch(apiUrl("/api/logs"));
                 const d = await r.json();
                 setLogs(d?.logs ?? []);
                 const l = (d?.logs ?? [])
@@ -21,7 +22,7 @@ export default function DevPanel() {
 
             // Memory
             try {
-                const r2 = await fetch("/api/memory/demo-user");
+                const r2 = await fetch(apiUrl("/api/memory/demo-user"));
                 const d2 = await r2.json();
                 setMemorySnap(d2.snapshot);
             } catch (e) { /* ignore */ }

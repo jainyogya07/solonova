@@ -1,5 +1,6 @@
 // src/frontend/src/components/chat/ChatBox.tsx
 import type { SolonovaMessage } from "../../hooks/useSolonova";
+import { apiUrl } from "../../utils/api";
 
 interface ChatBoxProps {
   messages: SolonovaMessage[];
@@ -85,7 +86,7 @@ export default function ChatBox({ messages, loading, onToolResult }: ChatBoxProp
                     // Or maybe I update `ChatBox` to accept `sendMessage` prop.
 
                     try {
-                      const r = await fetch("/api/tools/call", {
+                      const r = await fetch(apiUrl("/api/tools/call"), {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ tool: "codefix", args: { code, lang: "auto" } })

@@ -1,3 +1,4 @@
+import { apiUrl } from "../utils/api";
 // src/hooks/useSolonova.ts
 import { useState, useCallback, useEffect, useRef } from "react";
 
@@ -90,7 +91,7 @@ export default function useSolonova() {
     setMessages((p) => [...p, userMsg]);
 
     try {
-      const resp = await fetch("/api/agent", {
+      const resp = await fetch(apiUrl("/api/agent"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -141,7 +142,7 @@ export default function useSolonova() {
     setMessages((p) => [...p, { id: assistantId, role: "assistant" as const, content: "", timestamp: new Date().toISOString() }]);
 
     try {
-      const resp = await fetch("/api/agent/stream", {
+      const resp = await fetch(apiUrl("/api/agent/stream"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
