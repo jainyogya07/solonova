@@ -1,5 +1,6 @@
 // src/frontend/src/components/VisionPanel.tsx
 import { useState } from "react";
+import { apiUrl } from "../utils/api";
 
 export default function VisionPanel({ onResult }: { onResult?: (txt: string) => void }) {
     const [file, setFile] = useState<File | null>(null);
@@ -14,21 +15,37 @@ export default function VisionPanel({ onResult }: { onResult?: (txt: string) => 
         try {
             const form = new FormData();
             form.append("file", file);
-            const upl = await fetch("http://localhost:5174/api/upload", { method: "POST", body: form });
+            
+            // Upload file
+            const upl = await fetch(apiUrl("/api/upload"), { method: "POST", body: form });
+            if (!upl.ok) {
+                throw new Error(`Upload failed: ${upl.status} ${upl.statusText}`);
+            }
             const up = await upl.json();
-            if (!up?.path) throw new Error("Upload failed");
+            if (!up?.path) throw new Error("Upload failed: No file path returned");
 
-            const call = await fetch("http://localhost:5174/api/tools/call", {
+            // Call vision tool
+            const call = await fetch(apiUrl("/api/tools/call"), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ tool: "vision", args: { filePath: up.path } }),
             });
+            if (!call.ok) {
+                throw new Error(`Vision API failed: ${call.status} ${call.statusText}`);
+            }
             const d = await call.json();
+            if (d.error) {
+                throw new Error(d.error);
+            }
             setOut(d.result);
-            onResult?.(JSON.stringify(d.result, null, 2));
+            // Send only the refined description to chat
+            const description = d.result?.perceptSummary?.description || d.result?.description || "Image analysis completed.";
+            onResult?.(description);
         } catch (err: any) {
-            setOut({ error: err.message ?? String(err) });
-            onResult?.(`Vision error: ${err?.message ?? err}`);
+            const errorMsg = err?.message ?? String(err);
+            console.error("Vision error:", err);
+            setOut({ error: errorMsg });
+            onResult?.(`Vision error: ${errorMsg}`);
         } finally {
             setLoading(false);
         }
@@ -91,26 +108,13 @@ export default function VisionPanel({ onResult }: { onResult?: (txt: string) => 
             </div>
 
             {out && (
-                <div className="mt-2 p-3 bg-[#111] rounded text-xs font-mono border border-gray-800 overflow-x-auto max-h-60 overflow-y-auto">
-                    <div className="mb-2 text-purple-400 font-bold">Analysis Result:</div>
-                    {out.perceptSummary && (
-                        <div className="mb-3 whitespace-pre-wrap font-sans text-gray-300">
-                            {out.perceptSummary.raw || JSON.stringify(out.perceptSummary, null, 2)}
-                        </div>
-                    )}
-
-                    {out.labels && out.labels.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-2">
-                            {out.labels.map((l: string, i: number) => (
-                                <span key={i} className="px-1.5 py-0.5 bg-gray-800 rounded text-[10px] text-gray-400">{l}</span>
-                            ))}
-                        </div>
-                    )}
-
-                    {out.ocrText && (
-                        <div className="opacity-60 border-t border-gray-800 pt-2 mt-2">
-                            <div className="mb-1 font-bold">OCR Text:</div>
-                            {out.ocrText.slice(0, 200)}...
+                <div className="mt-2 p-3 bg-[#111] rounded border border-gray-800">
+                    <div className="mb-2 text-purple-400 font-bold text-sm">Refined Description:</div>
+                    {out.error ? (
+                        <div className="text-red-400 text-sm">{out.error}</div>
+                    ) : (
+                        <div className="text-gray-300 text-sm whitespace-pre-wrap leading-relaxed">
+                            {out.perceptSummary?.description || out.description || "No description available."}
                         </div>
                     )}
                 </div>

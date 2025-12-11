@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { apiUrl } from "../utils/api";
 
 export default function ToolPanel({ onResult }: { onResult: (result: string) => void }) {
     const [query, setQuery] = useState("");
@@ -34,15 +34,19 @@ export default function ToolPanel({ onResult }: { onResult: (result: string) => 
                     onKeyDown={(e) => {
                         if (e.key === "Enter" && query.trim()) {
                             setLastOutput({ text: "Searching...", isError: false });
-                            fetch("http://localhost:5174/api/tools/call", {
+                            fetch(apiUrl("/api/tools/call"), {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ tool: "browser", args: { q: query } }),
                             })
-                                .then(r => r.json())
+                                .then(r => {
+                                    if (!r.ok) throw new Error(`Search failed: ${r.status} ${r.statusText}`);
+                                    return r.json();
+                                })
                                 .then(d => {
                                     if (d.error) throw new Error(d.error);
-                                    handleSuccess("🔎 Search Result", JSON.stringify(d.result, null, 2));
+                                    const summary = d.result?.summary || "No results found.";
+                                    handleSuccess("🔎 Search Result", summary);
                                 })
                                 .catch(handleError);
                         }
@@ -53,15 +57,19 @@ export default function ToolPanel({ onResult }: { onResult: (result: string) => 
                     onClick={() => {
                         if (query.trim()) {
                             setLastOutput({ text: "Searching...", isError: false });
-                            fetch("http://localhost:5174/api/tools/call", {
+                            fetch(apiUrl("/api/tools/call"), {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ tool: "browser", args: { q: query } }),
                             })
-                                .then(r => r.json())
+                                .then(r => {
+                                    if (!r.ok) throw new Error(`Search failed: ${r.status} ${r.statusText}`);
+                                    return r.json();
+                                })
                                 .then(d => {
                                     if (d.error) throw new Error(d.error);
-                                    handleSuccess("🔎 Search Result", JSON.stringify(d.result, null, 2));
+                                    const summary = d.result?.summary || "No results found.";
+                                    handleSuccess("🔎 Search Result", summary);
                                 })
                                 .catch(handleError);
                         }
@@ -93,11 +101,12 @@ export default function ToolPanel({ onResult }: { onResult: (result: string) => 
                         if (!code.trim()) return;
                         setLastOutput({ text: "Running...", isError: false });
                         try {
-                            const res = await fetch("http://localhost:5174/api/tools/call", {
+                            const res = await fetch(apiUrl("/api/tools/call"), {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ tool: "run", args: { lang, code } }),
                             });
+                            if (!res.ok) throw new Error(`Code execution failed: ${res.status} ${res.statusText}`);
                             const data = await res.json();
                             const resultObj = data.result || {};
                             const outputText = resultObj.stdout || resultObj.stderr || resultObj.error || JSON.stringify(resultObj);
@@ -137,23 +146,26 @@ export default function ToolPanel({ onResult }: { onResult: (result: string) => 
                             // 1. Upload
                             const form = new FormData();
                             form.append("file", file);
-                            const upload = await fetch("http://localhost:5174/api/upload", {
+                            const upload = await fetch(apiUrl("/api/upload"), {
                                 method: "POST",
                                 body: form
                             });
+                            if (!upload.ok) throw new Error(`Upload failed: ${upload.status} ${upload.statusText}`);
                             const up = await upload.json();
-                            if (!up.ok) throw new Error(up.error || "Upload failed");
+                            if (!up?.path) throw new Error(up.error || "Upload failed: No file path returned");
 
                             // 2. Summarize
-                            const toolRes = await fetch("http://localhost:5174/api/tools/call", {
+                            const toolRes = await fetch(apiUrl("/api/tools/call"), {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ tool: "file", args: { filePath: up.path } }),
                             });
+                            if (!toolRes.ok) throw new Error(`Summarize failed: ${toolRes.status} ${toolRes.statusText}`);
                             const data = await toolRes.json();
                             if (data.error) throw new Error(data.error);
 
-                            handleSuccess("📁 File Summary", JSON.stringify(data.result, null, 2));
+                            const summary = data.result?.summary || "No summary available.";
+                            handleSuccess("📁 File Summary", summary);
 
                         } catch (err: any) {
                             handleError(err);
@@ -167,9 +179,11 @@ export default function ToolPanel({ onResult }: { onResult: (result: string) => 
             {/* SHARED OUTPUT DISPLAY */}
             {lastOutput && (
                 <div className="pt-2 border-t border-gray-700">
-                    <div className="p-2 bg-black rounded border border-gray-800 text-xs font-mono whitespace-pre-wrap max-h-60 overflow-y-auto">
-                        <div className="text-gray-500 mb-1">Tool Output:</div>
-                        <div className={lastOutput.isError ? "text-red-400" : "text-green-400"}>
+                    <div className="p-3 bg-[#111] rounded border border-gray-800">
+                        <div className="text-purple-400 font-bold text-sm mb-2">
+                            {lastOutput.isError ? "❌ Error" : "✓ Result"}
+                        </div>
+                        <div className={`text-sm whitespace-pre-wrap leading-relaxed ${lastOutput.isError ? "text-red-400" : "text-gray-300"}`}>
                             {lastOutput.text}
                         </div>
                     </div>
